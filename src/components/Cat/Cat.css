@@ -1,0 +1,264 @@
+/* Master Container */
+.cat-container {
+  --c-bg: #ffffff;
+  --c-line: #1a1a2e; /* Very dark navy/black for sharp pixel outlines */
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  z-index: 9999;
+  pointer-events: none;
+  transition: transform 0.1s; /* Smooth flip transition */
+}
+
+/* ================== HEAD ================== */
+.cat-head {
+  position: absolute;
+  top: 0;
+  left: 8px;
+  width: 32px;
+  height: 28px;
+  z-index: 3;
+  transition: top 0.3s;
+}
+
+/* Pointy Ears */
+.cat-ear {
+  position: absolute;
+  width: 12px;
+  height: 14px;
+  background: var(--c-bg);
+  border: 2px solid var(--c-line);
+  border-bottom: none;
+  z-index: 1;
+  transition: transform 0.2s ease;
+}
+.cat-ear.l {
+  left: 2px;
+  top: -6px;
+  border-radius: 4px 10px 0 0;
+  transform: rotate(-15deg);
+}
+.cat-ear.r {
+  right: 2px;
+  top: -6px;
+  border-radius: 10px 4px 0 0;
+  transform: rotate(15deg);
+}
+
+/* The head base (Mask) */
+.cat-face-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--c-bg);
+  border: 2px solid var(--c-line);
+  border-radius: 12px 12px 14px 14px;
+  overflow: hidden;
+  z-index: 2;
+}
+
+/* The features inside the face */
+.cat-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.2s ease, opacity 0.2s;
+}
+
+/* Classic vertical oval eyes */
+.cat-eye {
+  position: absolute;
+  top: 10px;
+  width: 4px;
+  height: 8px;
+  background: var(--c-line);
+  border-radius: 2px;
+  animation: cat-blink 4s infinite;
+}
+.cat-eye.l { left: 8px; }
+.cat-eye.r { right: 8px; }
+
+/* Tiny cute nose */
+.cat-nose {
+  position: absolute;
+  top: 16px;
+  left: 14px;
+  width: 4px;
+  height: 2px;
+  background: var(--c-line);
+  border-radius: 1px;
+}
+
+/* Horizontal pixel blushes/whiskers */
+.cat-blush {
+  position: absolute;
+  top: 15px;
+  width: 5px;
+  height: 2px;
+  background: var(--c-line);
+  border-radius: 1px;
+}
+.cat-blush.l { left: 2px; }
+.cat-blush.r { right: 2px; }
+
+/* ================== DIRECTIONAL LOGIC ================== */
+/* S (Down / Front) */
+.dir-s .cat-face { transform: translate(0, 0); }
+
+/* E (Right) */
+.dir-e .cat-face { transform: translate(12px, 0); }
+.dir-e .cat-ear.l { transform: translate(8px, 2px) rotate(5deg); z-index: 3; }
+.dir-e .cat-ear.r { transform: translate(0px, 0) rotate(25deg); }
+
+/* SE (Down-Right) */
+.dir-se .cat-face { transform: translate(8px, 3px); }
+.dir-se .cat-ear.l { transform: translate(4px, 0) rotate(-5deg); }
+.dir-se .cat-ear.r { transform: translate(2px, 2px) rotate(20deg); }
+
+/* NE (Up-Right) */
+.dir-ne .cat-face { transform: translate(10px, -6px); opacity: 0; /* Face looks away */ }
+.dir-ne .cat-ear.l { transform: translate(4px, -2px) rotate(-5deg); }
+.dir-ne .cat-ear.r { transform: translate(2px, 0) rotate(20deg); }
+
+/* N (Up / Back) */
+.dir-n .cat-face { transform: translate(0, -8px); opacity: 0; }
+.dir-n .cat-ear.l { transform: translate(0, -2px) rotate(-15deg); }
+.dir-n .cat-ear.r { transform: translate(0, -2px) rotate(15deg); }
+
+
+/* ================== BODY & LEGS ================== */
+.cat-body {
+  position: absolute;
+  top: 22px;
+  left: 12px;
+  width: 24px;
+  height: 20px;
+  z-index: 2;
+}
+
+.cat-torso {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--c-bg);
+  border: 2px solid var(--c-line);
+  border-radius: 10px 10px 12px 12px;
+  z-index: 2;
+  transition: height 0.3s, top 0.3s;
+}
+
+.cat-leg {
+  position: absolute;
+  width: 6px;
+  height: 10px;
+  background: var(--c-bg);
+  border: 2px solid var(--c-line);
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  z-index: 1;
+  top: 14px;
+  transition: height 0.3s, top 0.3s;
+}
+.cat-leg.fl { left: 2px; }
+.cat-leg.fr { right: 2px; }
+.cat-leg.bl { left: 6px; top: 12px; z-index: 0; }
+.cat-leg.br { right: 6px; top: 12px; z-index: 0; }
+
+/* ================== TAIL ================== */
+.cat-tail {
+  position: absolute;
+  top: 24px;
+  left: -2px;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--c-line);
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-radius: 50%;
+  z-index: 1;
+  transform: rotate(135deg);
+  transition: all 0.3s;
+}
+
+/* ================== ANIMATIONS (Running & Sitting) ================== */
+/* Idle breathing */
+.idle .cat-torso { animation: cat-breathe 2.5s ease-in-out infinite; }
+.idle .cat-head { animation: cat-breathe-head 2.5s ease-in-out infinite; }
+.idle .cat-tail { animation: cat-tail-swish 3s ease-in-out infinite; }
+
+/* Running Animations */
+.running .cat-torso { animation: cat-bob 0.2s infinite alternate; }
+.running .cat-head { animation: cat-bob-head 0.2s infinite alternate; }
+.running .cat-tail { 
+  top: 20px;
+  transform: rotate(180deg);
+  animation: cat-tail-run 0.2s infinite alternate; 
+}
+
+/* Paddling Legs */
+.running .cat-leg.fl, .running .cat-leg.br { animation: cat-run-1 0.2s infinite alternate; }
+.running .cat-leg.fr, .running .cat-leg.bl { animation: cat-run-2 0.2s infinite alternate; }
+
+/* Sitting Pose */
+.sitting .cat-torso { height: 16px; top: 4px; }
+.sitting .cat-head { top: 4px; }
+.sitting .cat-leg { height: 6px; top: 16px; }
+
+/* When sitting, the tail wraps around the front cutely */
+.sitting .cat-tail {
+  width: 22px;
+  height: 8px;
+  background: var(--c-bg);
+  border: 2px solid var(--c-line);
+  border-radius: 10px;
+  top: 40px;
+  left: 20px;
+  transform: rotate(0deg);
+  z-index: 4;
+}
+.sitting .cat-eye {
+  height: 2px; /* squinting happy eyes */
+  top: 14px;
+}
+
+/* ================== KEYFRAMES ================== */
+@keyframes cat-blink {
+  0%, 96%, 100% { transform: scaleY(1); }
+  98% { transform: scaleY(0.1); }
+}
+@keyframes cat-breathe {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.03); }
+}
+@keyframes cat-breathe-head {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-1px); }
+}
+@keyframes cat-bob {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(2px); }
+}
+@keyframes cat-bob-head {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(1px); }
+}
+@keyframes cat-run-1 {
+  0% { transform: translateY(0) rotate(10deg); }
+  100% { transform: translateY(-4px) rotate(-20deg); }
+}
+@keyframes cat-run-2 {
+  0% { transform: translateY(-4px) rotate(-20deg); }
+  100% { transform: translateY(0) rotate(10deg); }
+}
+@keyframes cat-tail-swish {
+  0%, 100% { transform: rotate(135deg); }
+  50% { transform: rotate(120deg); }
+}
+@keyframes cat-tail-run {
+  0% { transform: rotate(160deg); }
+  100% { transform: rotate(200deg); }
+}

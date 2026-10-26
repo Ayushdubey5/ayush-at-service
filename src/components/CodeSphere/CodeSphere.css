@@ -1,0 +1,38 @@
+.code-sphere-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: sphereFloat 6s ease-in-out infinite;
+}
+
+.code-sphere {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sphere-word {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  color: var(--accent-primary);
+  white-space: nowrap;
+  transition: color 0.3s;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+@keyframes sphereFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@media (max-width: 768px) {
+  .code-sphere {
+    width: 260px;
+    height: 260px;
+  }
+}
